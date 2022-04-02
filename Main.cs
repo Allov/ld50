@@ -24,6 +24,8 @@ public class Main : Node2D
     private Button TurretButton;
     private Button FireButton;
     private Label DaysSavedValueLabel;
+    private Control HUD;
+    private Control EndScreen;
     public float DifferentialFromLastSampleTimeUntilDoom;
 
     private float StartTimeUntilDoom;
@@ -47,15 +49,21 @@ public class Main : Node2D
         TimeUntilDoomTimer.WaitTime = 1f;
         TimeUntilDoomTimer.Start();
         TimeUntilDoomTimer.Connect("timeout", this, nameof(_on_TimeUntilDoomTicked));
-        TimeUntilDoomLabel = GetNode<Label>("UI/ImpendingDoomLabel");
+        TimeUntilDoomLabel = GetNode<Label>("UI/HUD/ImpendingDoomLabel");
 
         Columns = GD.Range(ColumnCount).ToList();
 
-        MoneyValueLabel = GetNode<Label>("UI/VBoxContainer/Info/VBoxContainer/Money/MoneyValueLabel");
-        TurretButton = GetNode<Button>("UI/VBoxContainer/Military/VBoxContainer/GridContainer/TurretButton");
-        FireButton = GetNode<Button>("UI/FireButton");
+        MoneyValueLabel = GetNode<Label>("UI/HUD/VBoxContainer/Info/VBoxContainer/Money/MoneyValueLabel");
+        TurretButton = GetNode<Button>("UI/HUD/VBoxContainer/Military/VBoxContainer/GridContainer/TurretButton");
+        FireButton = GetNode<Button>("UI/HUD/FireButton");
 
-        DaysSavedValueLabel = GetNode<Label>("UI/VBoxContainer/Info/VBoxContainer/DaysSaved/DaysSavedValueLabel");
+        DaysSavedValueLabel = GetNode<Label>("UI/HUD/VBoxContainer/Info/VBoxContainer/DaysSaved/DaysSavedValueLabel");
+
+
+        HUD = GetNode<Control>("UI/HUD");
+        EndScreen = GetNode<Control>("UI/EndScreen");
+
+
 
         StartTimeUntilDoom = TimeUntilDoom;
     }
@@ -77,6 +85,26 @@ public class Main : Node2D
         ElapsedRealTime += 1;
         TimeUntilDoom = TimeUntilDoom - MissileTimeAddValue;
 
+        // end game
+
+        if (TimeUntilDoom <= 0f)
+        {
+            ProcessEndGame();
+        }
+        else
+        {
+            ProcessGame();
+        }
+    }
+
+    private void ProcessEndGame()
+    {
+        HUD.Visible = false;
+        EndScreen.Visible = true;
+    }
+
+    private void ProcessGame()
+    {
         if (ElapsedRealTime % ReportFrequencyTime == 0)
         {
             DifferentialFromLastSampleTimeUntilDoom = StartTimeUntilDoom - TimeUntilDoom;
