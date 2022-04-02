@@ -1,0 +1,13 @@
+.import/
+Exports
+export_presets.cfg
+
+.mono/
+mono_crash*
+
+.vscode/
+workspace.code-workspace
+
+builds/
+
+.godot/

@@ -1,0 +1,333 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Assets/AsepriteFont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Assets/Characters/trumpy.png" type="Texture" id=2]
+[ext_resource path="res://Dialog.cs" type="Script" id=3]
+[ext_resource path="res://bip.wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/Characters/asteroidy.png" type="Texture" id=5]
+[ext_resource path="res://Asteroid.cs" type="Script" id=6]
+[ext_resource path="res://Assets/Characters/turret.png" type="Texture" id=7]
+[ext_resource path="res://Turret.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Main.cs" type="Script" id=9]
+
+[sub_resource type="StyleBoxLine" id=4]
+color = Color( 1, 0, 0, 1 )
+thickness = 5
+
+[sub_resource type="StyleBoxLine" id=5]
+thickness = 5
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0, 0.0636363 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 1.4, 0.0, 0, 0 ]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 103.0
+height = 152.0
+
+[sub_resource type="Animation" id=2]
+resource_name = "AsteroidPathing"
+
+[sub_resource type="TileSet" id=6]
+0/name = "turret.png 0"
+0/texture = ExtResource( 7 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 16, 16 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 9 )
+TurretScene = ExtResource( 8 )
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Dialog" type="Control" parent="UI"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/Dialog"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -71.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Dialog/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 341.0
+margin_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/Dialog/PanelContainer/HBoxContainer"]
+margin_right = 334.0
+margin_bottom = 57.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/mono_font = ExtResource( 1 )
+custom_fonts/normal_font = ExtResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut semper metus et justo suscipit scelerisque. Vestibulum tristique, ex id imperdiet."
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut semper metus et justo suscipit scelerisque. Vestibulum tristique, ex id imperdiet."
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="PanelContainer2" type="PanelContainer" parent="UI/Dialog"]
+margin_left = 9.0
+margin_top = 126.0
+margin_right = 39.0
+margin_bottom = 156.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="UI/Dialog/PanelContainer2"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 23.0
+margin_bottom = 23.0
+texture = ExtResource( 2 )
+
+[node name="BipSound" type="AudioStreamPlayer" parent="UI/Dialog"]
+stream = ExtResource( 4 )
+volume_db = -9.613
+
+[node name="FireButton" type="Button" parent="UI"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -15.5
+margin_top = -18.0
+margin_right = 15.5
+rect_pivot_offset = Vector2( 31, 18 )
+text = "FIRE!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+anchor_bottom = 1.0
+margin_right = 89.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Info" type="Panel" parent="UI/VBoxContainer"]
+margin_right = 89.0
+margin_bottom = 90.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/VBoxContainer/Info"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Money" type="HBoxContainer" parent="UI/VBoxContainer/Info/VBoxContainer"]
+margin_right = 91.0
+margin_bottom = 12.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MoneyValueLabel" type="Label" parent="UI/VBoxContainer/Info/VBoxContainer/Money"]
+margin_right = 19.0
+margin_bottom = 12.0
+custom_colors/font_color = Color( 1, 0.960784, 0, 1 )
+text = "Mass"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DaysSaved" type="HBoxContainer" parent="UI/VBoxContainer/Info/VBoxContainer"]
+margin_top = 16.0
+margin_right = 91.0
+margin_bottom = 28.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DaysSavedLabel" type="Label" parent="UI/VBoxContainer/Info/VBoxContainer/DaysSaved"]
+margin_right = 87.0
+margin_bottom = 12.0
+text = "Days Saved Today: "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DaysSavedValueLabel" type="Label" parent="UI/VBoxContainer/Info/VBoxContainer/DaysSaved"]
+margin_left = 91.0
+margin_right = 91.0
+margin_bottom = 12.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Mass2" type="HBoxContainer" parent="UI/VBoxContainer/Info/VBoxContainer"]
+margin_top = 32.0
+margin_right = 91.0
+margin_bottom = 44.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="UI/VBoxContainer/Info/VBoxContainer/Mass2"]
+margin_right = 19.0
+margin_bottom = 12.0
+text = "Mass"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/VBoxContainer/Info/VBoxContainer/Mass2"]
+margin_left = 23.0
+margin_right = 91.0
+margin_bottom = 5.0
+size_flags_horizontal = 3
+size_flags_vertical = 2
+custom_styles/fg = SubResource( 4 )
+custom_styles/bg = SubResource( 5 )
+value = 50.0
+percent_visible = false
+
+[node name="PanelContainer2" type="PanelContainer" parent="UI/VBoxContainer"]
+margin_top = 94.0
+margin_right = 89.0
+margin_bottom = 164.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/VBoxContainer/PanelContainer2"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 82.0
+margin_bottom = 63.0
+
+[node name="Label" type="Label" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+margin_right = 75.0
+margin_bottom = 12.0
+text = "Offers"
+
+[node name="GridContainer" type="GridContainer" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+margin_top = 16.0
+margin_right = 75.0
+margin_bottom = 56.0
+columns = 2
+
+[node name="Button" type="Button" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer/GridContainer"]
+margin_right = 37.0
+margin_bottom = 18.0
+text = "USA"
+
+[node name="Button2" type="Button" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer/GridContainer"]
+margin_left = 41.0
+margin_right = 75.0
+margin_bottom = 18.0
+text = "China"
+
+[node name="Button3" type="Button" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer/GridContainer"]
+margin_top = 22.0
+margin_right = 37.0
+margin_bottom = 40.0
+text = "Russia"
+
+[node name="Button4" type="Button" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer/GridContainer"]
+margin_left = 41.0
+margin_top = 22.0
+margin_right = 75.0
+margin_bottom = 40.0
+text = "EU"
+
+[node name="Military" type="PanelContainer" parent="UI/VBoxContainer"]
+margin_top = 168.0
+margin_right = 89.0
+margin_bottom = 216.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/VBoxContainer/Military"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 82.0
+margin_bottom = 41.0
+
+[node name="Label" type="Label" parent="UI/VBoxContainer/Military/VBoxContainer"]
+margin_right = 75.0
+margin_bottom = 12.0
+text = "Military"
+
+[node name="GridContainer" type="GridContainer" parent="UI/VBoxContainer/Military/VBoxContainer"]
+margin_top = 16.0
+margin_right = 75.0
+margin_bottom = 34.0
+columns = 2
+
+[node name="TurretButton" type="Button" parent="UI/VBoxContainer/Military/VBoxContainer/GridContainer"]
+margin_right = 39.0
+margin_bottom = 18.0
+text = "Turret"
+
+[node name="ImpendingDoomLabel" type="Label" parent="UI"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -64.5
+margin_right = 64.5
+margin_bottom = 12.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Universe" type="Node2D" parent="."]
+
+[node name="Asteroid" type="KinematicBody2D" parent="Universe"]
+position = Vector2( 185, -66 )
+script = ExtResource( 6 )
+Acceleration = SubResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="Universe/Asteroid"]
+texture = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Universe/Asteroid"]
+position = Vector2( -2, 12 )
+rotation = -1.57079
+shape = SubResource( 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Universe"]
+anims/AsteroidPathing = SubResource( 2 )
+
+[node name="TileMap" type="TileMap" parent="Universe"]
+tile_set = SubResource( 6 )
+cell_size = Vector2( 16, 16 )
+format = 1
+
+[connection signal="pressed" from="UI/FireButton" to="." method="_on_FireButton_pressed"]
+[connection signal="pressed" from="UI/VBoxContainer/Military/VBoxContainer/GridContainer/TurretButton" to="." method="_on_TurretButton_pressed"]
